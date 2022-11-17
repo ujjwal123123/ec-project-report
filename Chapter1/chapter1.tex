@@ -1,100 +1,309 @@
 %!TEX root = ../thesis.tex
-%*******************************************************************************
-%*********************************** First Chapter *****************************
-%*******************************************************************************
 
-\chapter{Getting started}  %Title of the First Chapter
+\chapter{Introduction}
 
-\ifpdf
-    \graphicspath{{Chapter1/Figs/Raster/}{Chapter1/Figs/PDF/}{Chapter1/Figs/}}
-\else
-    \graphicspath{{Chapter1/Figs/Vector/}{Chapter1/Figs/}}
-\fi
+\graphicspath{{Chapter1/Figs}{Figs}}
+
+\section{Edge computing}
+
+Edge computing is a newer computation paradigm as compared to cloud computing.
+However, difference between them is that edge computing begins computation
+closer to the edge of the network. As more of the data is being generated near
+the edge of the network, edge computing enables the data to be generated near
+the data source.
+\cite{weisongshiEdgeComputingVision2016}
+
+\subsection{Why use edge computing in place of cloud computing?}
+
+The most important reason for using edge computing is that it reduces the
+latency as the data has to travel a shorter distance.
+\cite{weisongshiEdgeComputingVision2016} In addition to this, with emergence of
+Internet of Things, the data generated at the edge is expected to grow rapidly.
+For example, it is expected the autonomous vehicles will generate data in the
+order of 1Tb per second. In such a case, it may not be possible for the cloud to
+keep pace with the data generated at the edge. Edge computing can help in this
+situation as it can process the data at the edge itself.
+
+\subsection{Challenges with edge computing}
+
+One of the major challenges with edge computing is that the edge devices are
+resource constrained. They have limited processing power, memory and storage.
+Often, this problem is solving using offloading. For example, if a node is low
+on storage space, then the data generate on this node or the data this node was
+supported to store may be offloaded to other nodes in the network.
+
+Other than this, no node in the edge network has complete knowledge of the edge
+network. As such, it can become difficult to do any computation on the edge as
+the nodes may not be having all the information required for the computation.
+
+\subsection{Edge computing for vehicles}
+
+Researchers have been working on edge computing for vehicles for a while now. In
+autonomous vehicles, the decision must be taken very quickly and there is very
+low tolerance for latency. As such, edge computing can be used to reduce the
+latency and improve the performance of the autonomous vehicles.
+
+\begin{figure}[h]
+      \centering
+      \includegraphics[width=1.0\textwidth]{"Vehicular Edge Network.png"}
+      \caption{Vehicular edge network architecture}
+\end{figure}
+
+Vehicular edge networks usually consists of a central cloud to which a number of
+gateway devices called roadside units (RSUs) are connected. The RSUs are
+connected to the vehicles. Vehicular edge networks are highly dynamic and
+vehicles change their position quite often.
 
 
-%********************************** %First Section  **************************************
-\section{What is loren ipsum? Title with math \texorpdfstring{$\sigma$}{[sigma]}} %Section - 1.1 
+\section{Problem statement}
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry (see 
-Section~\ref{section1.3}). Lorem Ipsum~\citep{Aup91} has been the industry's 
-standard dummy text ever since the 1500s, when an unknown printer took a galley 
-of type and scrambled it to make a type specimen book. It has survived not only 
-five centuries, but also the leap into electronic typesetting, remaining 
-essentially unchanged. It was popularised in the 1960s with the release of 
-Letraset sheets containing Lorem Ipsum passages, and more recently with desktop 
-publishing software like Aldus PageMaker including versions of Lorem 
-Ipsum~\citep{AAB95,Con90,LM65}.
+Because of the issues described above, we need to have some kind of method to
+enable nodes to find out where the required data may be present in the edge
+network.
 
-The most famous equation in the world: $E^2 = (m_0c^2)^2 + (pc)^2$, which is 
-known as the \textbf{energy-mass-momentum} relation as an in-line equation.
+We are trying to answer resource queries in edge networks while keeping in mind
+the constraints on resources that come with edge computing. We are also trying
+to do it in a privacy preserving manner.
 
-A {\em \LaTeX{} class file}\index{\LaTeX{} class file@LaTeX class file} is a file, which holds style information for a particular \LaTeX{}.
+Requirements:
+\begin{itemize}
+      \item Data privacy is maintained and the data itself is not used for
+      indexing
+      \item The solution should be scalable
+      \item The algorithm should preferably be online
+\end{itemize}
+
+Further, it is not possible to simply boardcast the query to all the nodes in
+network as it would very inefficient and would also lead to privacy issues.
+Also, caching the data on other nodes should be avoided because of the privacy
+issues.
+
+Broadcasting the query to all the nodes is not a good solution as it will not
+scale well with the number of nodes in the network. In addition to this, it will
+also consume a lot of bandwidth. Yet another issue would be privacy.
+
+\subsubsection{Use cases}
+The problem of resource or data discovery is by no mean unique to edge computing
+or IoT. Even in the computer architecture, Flat Cache-Only Memory Architecture
+(COMA) faces the similar problem. In Flat COMA, memory lines can freely migrate.
+Whenever there is cache miss, the memory line must be located is the network and
+migrated to where it is needed.
+\cite{joseptorrellasCacheOnlyMemoryArchitecture}
+
+But in our work, we are trying to solve this problem in context of edge
+computing where the nodes may be static or dynamic. Weather crowdsensing would
+need only static nodes, but in vehicular edge networks, the nodes are dynamic.
 
 
-\begin{align}
-CIF: \hspace*{5mm}F_0^j(a) = \frac{1}{2\pi \iota} \oint_{\gamma} \frac{F_0^j(z)}{z - a} dz
-\end{align}
+\section{Prior works}
 
-\nomenclature[z-cif]{$CIF$}{Cauchy's Integral Formula}                                % first letter Z is for Acronyms 
-\nomenclature[a-F]{$F$}{complex function}                                                   % first letter A is for Roman symbols
-\nomenclature[g-p]{$\pi$}{ $\simeq 3.14\ldots$}                                             % first letter G is for Greek Symbols
-\nomenclature[g-i]{$\iota$}{unit imaginary number $\sqrt{-1}$}                      % first letter G is for Greek Symbols
-\nomenclature[g-g]{$\gamma$}{a simply closed curve on a complex plane}  % first letter G is for Greek Symbols
-\nomenclature[x-i]{$\oint_\gamma$}{integration around a curve $\gamma$} % first letter X is for Other Symbols
-\nomenclature[r-j]{$j$}{superscript index}                                                       % first letter R is for superscripts
-\nomenclature[s-0]{$0$}{subscript index}                                                        % first letter S is for subscripts
+Numerous surveys have been done on edge computing as well as data access in IoT
+or distributed systems. These include \citet{kouahlaSurveyBigIoT2022} and
+\citet{fathyLargeScaleIndexingDiscovery2018}.
+
+\citet{fathyLargeScaleIndexingDiscovery2018} prescribes the following taxonomy
+for queries in IoT:
+
+\begin{itemize}
+      \item \textbf{Data queries}: Here, we are only interested in the data,
+            regardless of its source. The may be indexed by:
+            \begin{itemize}
+                  \item Spatial features: The data may be indexed using spatial
+                        attributes, e.g. geo-coordinates. Space filling curves
+                        may be used to reduce dimensionality.
+                  \item Thematic features: data is indexed based on the keywords
+                        or its attributes.
+                  \item Temporal features: data is indexed based on the time at
+                        which it was generated.
+            \end{itemize}
+
+      \item \textbf{Resource queries}: Rather than finding the data stored on
+            the node, the nodes are only interested in finding a physical
+            resource on the network.
+      \item \textbf{Higher-level abstractions}: the queries are based on
+            higher-level abstractions like events, activities and patterns which
+            require data from several nodes to be combined and processed.
+\end{itemize}
+
+\citet{kouahlaSurveyBigIoT2022} also classifies indexing techniques as below:
+
+\begin{itemize}
+      \item Indexing structures in a Multidimensional Space
+            \begin{itemize}
+                  \item Hashing-based techniques
+                  \item Tree-based techniques
+                  \item Bitmap-based techniques
+            \end{itemize}
+      \item Indexing structures in a Metric Space
+            \begin{itemize}
+                  \item Tree-based techniques
+            \end{itemize}
+\end{itemize}
+
+In this work, our focus is on resource queries. The advantage of focusing on
+resource queries over data queries is that the data queries can be trivially
+answered once the resource queries are answered. Further, it allows the nodes to
+implement some kind of authentication mechanism to ensure that the data is not
+publically available.
 
 
-%********************************** %Second Section  *************************************
-\section{Why do we use loren ipsum?} %Section - 1.2
+In 2012, \citet{federicapaganelliDHTBasedDiscoveryService2012} proposed a scheme
+that DHTs for service discovery in Internet of Things. Their method allowed
+multi-attribute queries as well as range queries. The method consists of three
+layers. They first used a space-filling curve to linearize and map the
+multidimensional domain into a one-dimensional one. Then a Prefix-Hash Table is
+used on top a generic DHT with standard interface for get and get. At the end,
+DHT implementation based on the Kademlia algorithm.
+\citet{federicapaganelliDHTBasedDiscoveryService2012}, however, did not apply
+DHTs to edge networks.
+
+Researchers have also attempted to user Gaussian Mixture Models (GMM) for
+searching and indexing in edge computing.
 
 
-It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using `Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for `lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+\section{Distributed Hash Tables}
 
-%********************************** % Third Section  *************************************
-\section{Where does it come from?}  %Section - 1.3 
-\label{section1.3}
+The Distributed Hash Tables (DHTs) are similar to the conventional hash tables,
+except that the key-value pairs are stored across multiple nodes in the network.
+Distributed hash tables are highly scalable and fault-tolerant. Like traditional
+hash-tables, DHTs also support ``get'' and ``put'' operations. They are commonly
+used in the peer-to-peer networks. There exist multiple variants of DHTs
+including Chord \cite{ChordScalablePeertopeer}, Tapestry
+\cite{zhaoTapestryResilientGlobalscale2004} and Kademlia
+\cite{petarmaymounkovKademliaPeertoPeerInformation2002}.
 
-Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+In DHTs, the data is placed deterministically on the nodes in the network. DHTs
+are self-organizing and self-healing.
 
-The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from ``de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham
+Of these DHTs, Kademlia is the most widely used. It is used in BitTorrent
+\cite{andrewloewensternDHTProtocol2008} as well as in Ethereum. Every key-value
+pair is stored with multiple nodes in the network. This is done to ensure that
+the network is robust to node failures. Kademlia is not affected if a node
+leaves or joins the network. Each node joining the Kademlia randomly generates a
+160-bit identifier.
+\cite{petarmaymounkovKademliaPeertoPeerInformation2002}
 
-``Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+\subsection{How Kademlia works?}
 
-Section 1.10.32 of ``de Finibus Bonorum et Malorum", written by Cicero in 45 BC: ``Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"
+Whenever a key-value pair is to be stored in the network, a 160 bit hash of the
+key is calculated. Then, nodes with the identifier closest to the hash are
+selected for storing the key-value pair. For measuring the distance and finding
+the closest nodes to a given key, Kademlia uses XOR metric even though it is
+non-euclidean. The XOR metric satisfies all four properties of a distance
+metric.
+\cite{MetricSpace2022}
 
-1914 translation by H. Rackham: ``But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?"
+Similarly, when finding the value for a given key, the nodes with the identifier
+closest to the hash of the key are selected. An attempt is then made to retrieve
+the corresponding values from these nodes.
 
-Section 1.10.33 of ``de Finibus Bonorum et Malorum", written by Cicero in 45 BC: ``At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
+The authors also propose an XOR based routing algorithm for finding the node
+with the identifier closest to a given key. With the algorithm proposed, in each
+iteration, we get one bit closer to the target node. Thus, if the network size
+if $n$, then the algorithm takes $O(log(n))$ iterations to find the target node.
 
-1914 translation by H. Rackham: ``On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains."
+Nodes in Kademlia can visualize as leaves in a binary tree where the position of
+each of the nodes is given by its identifier. In the algorithm, each node is
+required to maintain a routing table. Each of the node is expected to store
+information about $k$ nodes from each of the maximal tree in the that it is not
+a part in its routing table. The information includes the identifier, IP address
+and the port number. The requirement of storing information about $k$ nodes from
+each is to bring redundancy and to ensure that the network is robust to node
+failures.
 
-\nomenclature[z-DEM]{DEM}{Discrete Element Method}
-\nomenclature[z-FEM]{FEM}{Finite Element Method}
-\nomenclature[z-PFEM]{PFEM}{Particle Finite Element Method}
-\nomenclature[z-FVM]{FVM}{Finite Volume Method}
-\nomenclature[z-BEM]{BEM}{Boundary Element Method}
-\nomenclature[z-MPM]{MPM}{Material Point Method}
-\nomenclature[z-LBM]{LBM}{Lattice Boltzmann Method}
-\nomenclature[z-MRT]{MRT}{Multi-Relaxation 
-Time}
-\nomenclature[z-RVE]{RVE}{Representative Elemental Volume}
-\nomenclature[z-GPU]{GPU}{Graphics Processing Unit}
-\nomenclature[z-SH]{SH}{Savage Hutter}
-\nomenclature[z-CFD]{CFD}{Computational Fluid Dynamics}
-\nomenclature[z-LES]{LES}{Large Eddy Simulation}
-\nomenclature[z-FLOP]{FLOP}{Floating Point Operations}
-\nomenclature[z-ALU]{ALU}{Arithmetic Logic Unit}
-\nomenclature[z-FPU]{FPU}{Floating Point Unit}
-\nomenclature[z-SM]{SM}{Streaming Multiprocessors}
-\nomenclature[z-PCI]{PCI}{Peripheral Component Interconnect}
-\nomenclature[z-CK]{CK}{Carman - Kozeny}
-\nomenclature[z-CD]{CD}{Contact Dynamics}
-\nomenclature[z-DNS]{DNS}{Direct Numerical Simulation}
-\nomenclature[z-EFG]{EFG}{Element-Free Galerkin}
-\nomenclature[z-PIC]{PIC}{Particle-in-cell}
-\nomenclature[z-USF]{USF}{Update Stress First}
-\nomenclature[z-USL]{USL}{Update Stress Last}
-\nomenclature[s-crit]{crit}{Critical state}
-\nomenclature[z-DKT]{DKT}{Draft Kiss Tumble}
-\nomenclature[z-PPC]{PPC}{Particles per cell}
+\begin{figure}[h]
+      \centering
+      \includegraphics[width=1.0\textwidth]{kademlia.png}
+      \caption{The node with identifier 0011 stores information about nodes in
+            four subtrees which are encircled.
+            \cite{petarmaymounkovKademliaPeertoPeerInformation2002}}
+      % \caption[Routing in Kademlia]
+\end{figure}
+
+\section{Using Distributed Hash Tables for Edge Computing}
+
+
+We tried to extend DHTs to edge networks. We used Kademlia as the base DHT.
+
+\citet{xieEfficientIndexingMechanism2019} observed that DHTs may use a longer
+than the shortest possible path between two nodes. This happens because the
+nodes which may be logically close to each as determined by XOR metric on node
+identifier may, in fact, be far apart physically. One possible way of solving
+this problem is to modify the node identifier used by Kademlia so that it is
+based on the location of the node. \citet{mengweiImprovementKademliaBased2013}
+did this by using the IP address of the nodes as the prefix in the node
+identifier. While this should make the routing in Kademlia more efficient, this
+method suffers from the drawback that the IP address of the node may change.
+
+The another way in which node identifiers can be modified is to encode the
+services offered a node into its identifier. For example, if a node is offering
+weather sensing service, its identifier may be prefixed by ``10'' or if it is
+offering road-traffic information, its identifier may be prefixed by ``01''.
+Similarly, if both the services are offered by the node, its identifier may
+start with ``11''. Because of how routing works in Kademlia, it would be trivial
+to search for nodes offering a particular service if this scheme is used. While
+we could not find any work that has done this, we believe that this too will
+have limitations, e.g. \mynote{what are the limitations?}
+
+We used the open-source Python library for testing if Kademlia would be
+appropriate for this use case. \cite{KademliaIndexRst}
+
+
+\section{Learned indexes}
+
+\citet{kraskaCaseLearnedIndex2018a} proposed that machine learning models may be
+used along with traditional data structures to improve performance. For example,
+in a sorted array, instead of using binary search or an index, a machine
+learning model may be used to predict the appropriate index of the element. This
+can be applied to many structures like B-trees, bloom filters, etc.
+
+Several learned indexes have been proposed -- Learned Spatial Index
+\cite{pandeyCaseLearnedSpatial2020} for answering spatial range queries, Learned
+Secondary Index \cite{kipfLSILearnedSecondary2022} for unsorted data,
+RadixSpline \cite{kipfRadixSplineSinglePassLearned2020}, an index that can be
+built in a single pass and Practical Learned Index (PLEX)
+\cite{stoianPracticalLearnedIndexing2021} which was introduced to make the
+learned index more practical by reducing the number of hyperparameters to just
+one.
+
+The idea of using machine learning models has been so influential that
+researchers are applying the same approach to even the sorting algorithms.
+\cite{kristoCaseLearnedSorting2020}
+
+Learned indices have recently been gaining popularity in the database community
+recently.
+
+
+\citet{kraskaCaseLearnedIndex2018} also proposes a Recursive Model Index which
+is hierarchical in nature. They are similar to B-trees except, a machine
+learning model is used in each stage. On each stage, the model predicts another
+model until the leaf node is reached where the data is stored. It can also be
+viewed as each node picking a better expert to answer the query.
+
+\begin{figure}[h]
+      \centering
+      \includegraphics[width=1.0\textwidth]{RMI.png}
+      \caption{The Recursive Model Index. \cite{kraskaCaseLearnedIndex2018}}
+\end{figure}
+
+While \citet{kraskaCaseLearnedIndex2018} proposed that model should be trained
+only once, but we believe it should be possible to update the model periodically
+so that it can serve the queries better.
+
+To test the performance of learned indexes, we simulated an edge network in
+Python. Inside each edge node, we put five key value pairs. The keys were
+randomly generated strings. The values were randomly generated integers. First,
+keys were encoded using ordinal encoding. Then a one-vs-rest multi-class
+classifier was used to predict the location which the key-value pairs might be
+stored. Though the results were not conclusive, we believe that using a real
+world dataset like \cite{taxi&limousinecommissionNewYorkTaxi} should give
+conclusive results. This is because random data carrier the most amount of
+entropy, it is the most difficult to compress, and real world data usually has a
+lot of redundancy and patterns which the model can learn.
+
+\section{Conclusion}
+
+We believe learned indexes can be a good fit for this problem. Along with
+learned indexes, the routing algorithm proposed in Kademlia can be used to
+routing after modifying it so that it favors the shortest path between the nodes
+based on the scheme proposed in \citet{mengweiImprovementKademliaBased2013}.

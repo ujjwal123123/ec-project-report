@@ -870,7 +870,7 @@ wish to left align your text}
 \newcommand{\advisorrole}[1]{\renewcommand{\@advisorrole}{#1}}
 
 % Advisor width to align
-\newcommand{\@advisorlinewidth}{0.25\textwidth}
+\newcommand{\@advisorlinewidth}{0.55\textwidth}
 \newcommand{\advisorlinewidth}[1]{\renewcommand{\@advisorlinewidth}{#1}}
 
 % Submission Text
