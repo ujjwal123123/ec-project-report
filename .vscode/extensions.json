@@ -1,5 +1,7 @@
 {
     "recommendations": [
-        "James-Yu.latex-workshop"
+        "james-yu.latex-workshop",
+        "tecosaur.latex-utilities",
+        "mushan.vscode-paste-image"
     ]
 }
