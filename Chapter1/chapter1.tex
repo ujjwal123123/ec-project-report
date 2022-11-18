@@ -2,15 +2,14 @@
 
 \chapter{Introduction}
 
-\graphicspath{{Chapter1/Figs}{Figs}}
+\graphicspath{{Figs}}
 
 \section{Edge computing}
 
 Edge computing is a newer computation paradigm as compared to cloud computing.
-However, difference between them is that edge computing begins computation
-closer to the edge of the network. As more of the data is being generated near
-the edge of the network, edge computing enables the data to be generated near
-the data source.
+Difference between them is that edge computing begins computation closer to the
+edge of the network. As more of the data is being generated near the edge of the
+network, edge computing enables the data to be processed near the data source.
 \cite{weisongshiEdgeComputingVision2016}
 
 \subsection{Why use edge computing in place of cloud computing?}
@@ -19,29 +18,35 @@ The most important reason for using edge computing is that it reduces the
 latency as the data has to travel a shorter distance.
 \cite{weisongshiEdgeComputingVision2016} In addition to this, with emergence of
 Internet of Things, the data generated at the edge is expected to grow rapidly.
-For example, it is expected the autonomous vehicles will generate data in the
-order of 1Tb per second. In such a case, it may not be possible for the cloud to
-keep pace with the data generated at the edge. Edge computing can help in this
-situation as it can process the data at the edge itself.
+For example, it is expected that the autonomous vehicles will generate data in
+the order of 1Tb per second. In such a case, it may not be possible for the
+cloud to keep pace with the data generated at the edge. Edge computing can help
+in this situation as it can process the data at the edge itself.
 
 \subsection{Challenges with edge computing}
 
 One of the major challenges with edge computing is that the edge devices are
 resource constrained. They have limited processing power, memory and storage.
-Often, this problem is solving using offloading. For example, if a node is low
-on storage space, then the data generate on this node or the data this node was
-supported to store may be offloaded to other nodes in the network.
+Often, this problem is solving using offloading. A node that is low on resources
+may enlist the other nodes for help. For example, if a node is low on storage
+space, then the data generate on this node or the data this node was supported
+to store may be offloaded to other nodes in the network. Similarly, data
+processing can be offloaded to other nodes.
 
-Other than this, no node in the edge network has complete knowledge of the edge
-network. As such, it can become difficult to do any computation on the edge as
-the nodes may not be having all the information required for the computation.
+Other challenge is that, no node in the edge network has complete knowledge of
+the edge network. This is in contrast with cloud computing where a central is
+responsible for all the processing and does not need to coordinator with others.
+As such, it can become difficult to do any computation on the edge as the nodes
+may not be having all the information required for the computation.
 
 \subsection{Edge computing for vehicles}
 
-Researchers have been working on edge computing for vehicles for a while now. In
-autonomous vehicles, the decision must be taken very quickly and there is very
-low tolerance for latency. As such, edge computing can be used to reduce the
-latency and improve the performance of the autonomous vehicles.
+Researchers have been working on using edge computing for vehicles for a while
+now. In autonomous vehicles, the decision must be taken quickly as there is very
+low tolerance for latency. Further, the data that a vehicle generate is rarely
+needed outside the geographical vicinity in which the vehicle is present. Using
+edge computing makes the common use-case faster. As such, edge computing can be
+used to improve the performance of the autonomous vehicles.
 
 \begin{figure}[h]
       \centering
@@ -50,10 +55,10 @@ latency and improve the performance of the autonomous vehicles.
 \end{figure}
 
 Vehicular edge networks usually consists of a central cloud to which a number of
-gateway devices called roadside units (RSUs) are connected. The RSUs are
+gateway devices called roadside units (RSUs) are connected. The RSUs are further
 connected to the vehicles. Vehicular edge networks are highly dynamic and
-vehicles change their position quite often.
-
+vehicles change their position quite often. Because of this, hand-offs may be
+needed very frequently.
 
 \section{Problem statement}
 
@@ -61,28 +66,26 @@ Because of the issues described above, we need to have some kind of method to
 enable nodes to find out where the required data may be present in the edge
 network.
 
-We are trying to answer resource queries in edge networks while keeping in mind
-the constraints on resources that come with edge computing. We are also trying
-to do it in a privacy preserving manner.
+We are trying to come up with a method for answering resource queries in edge
+networks while keeping in mind the constraints on resources that come with edge
+computing.
 
-Requirements:
+Requirements for the solution:
 \begin{itemize}
-      \item Data privacy is maintained and the data itself is not used for
-      indexing
+      \item Data privacy is maintained and the data itself should not be used
+            for indexing or querying
       \item The solution should be scalable
-      \item The algorithm should preferably be online
+      \item The algorithm should preferably be online -- it should be able to
+            index or answer queries for the data that is being generated
 \end{itemize}
 
 Further, it is not possible to simply boardcast the query to all the nodes in
-network as it would very inefficient and would also lead to privacy issues.
-Also, caching the data on other nodes should be avoided because of the privacy
-issues.
-
-Broadcasting the query to all the nodes is not a good solution as it will not
-scale well with the number of nodes in the network. In addition to this, it will
-also consume a lot of bandwidth. Yet another issue would be privacy.
+network as it would very inefficient. Doing so will lead to privacy issues as
+the queries would be known to every node in the network. Also, caching the data
+on other nodes should be avoided because of the privacy issues.
 
 \subsubsection{Use cases}
+
 The problem of resource or data discovery is by no mean unique to edge computing
 or IoT. Even in the computer architecture, Flat Cache-Only Memory Architecture
 (COMA) faces the similar problem. In Flat COMA, memory lines can freely migrate.
@@ -91,11 +94,11 @@ migrated to where it is needed.
 \cite{joseptorrellasCacheOnlyMemoryArchitecture}
 
 But in our work, we are trying to solve this problem in context of edge
-computing where the nodes may be static or dynamic. Weather crowdsensing would
+computing where the nodes may be static or dynamic. Weather crowd-sensing would
 need only static nodes, but in vehicular edge networks, the nodes are dynamic.
 
 
-\section{Prior works}
+\chapter{Literature review}
 
 Numerous surveys have been done on edge computing as well as data access in IoT
 or distributed systems. These include \citet{kouahlaSurveyBigIoT2022} and
@@ -220,35 +223,6 @@ failures.
       % \caption[Routing in Kademlia]
 \end{figure}
 
-\section{Using Distributed Hash Tables for Edge Computing}
-
-
-We tried to extend DHTs to edge networks. We used Kademlia as the base DHT.
-
-\citet{xieEfficientIndexingMechanism2019} observed that DHTs may use a longer
-than the shortest possible path between two nodes. This happens because the
-nodes which may be logically close to each as determined by XOR metric on node
-identifier may, in fact, be far apart physically. One possible way of solving
-this problem is to modify the node identifier used by Kademlia so that it is
-based on the location of the node. \citet{mengweiImprovementKademliaBased2013}
-did this by using the IP address of the nodes as the prefix in the node
-identifier. While this should make the routing in Kademlia more efficient, this
-method suffers from the drawback that the IP address of the node may change.
-
-The another way in which node identifiers can be modified is to encode the
-services offered a node into its identifier. For example, if a node is offering
-weather sensing service, its identifier may be prefixed by ``10'' or if it is
-offering road-traffic information, its identifier may be prefixed by ``01''.
-Similarly, if both the services are offered by the node, its identifier may
-start with ``11''. Because of how routing works in Kademlia, it would be trivial
-to search for nodes offering a particular service if this scheme is used. While
-we could not find any work that has done this, we believe that this too will
-have limitations, e.g. \mynote{what are the limitations?}
-
-We used the open-source Python library for testing if Kademlia would be
-appropriate for this use case. \cite{KademliaIndexRst}
-
-
 \section{Learned indexes}
 
 \citet{kraskaCaseLearnedIndex2018a} proposed that machine learning models may be
@@ -266,15 +240,12 @@ built in a single pass and Practical Learned Index (PLEX)
 learned index more practical by reducing the number of hyperparameters to just
 one.
 
-The idea of using machine learning models has been so influential that
+Learned indices have recently been gaining popularity in the database community
+recently. The idea of using machine learning models has been so influential that
 researchers are applying the same approach to even the sorting algorithms.
 \cite{kristoCaseLearnedSorting2020}
 
-Learned indices have recently been gaining popularity in the database community
-recently.
-
-
-\citet{kraskaCaseLearnedIndex2018} also proposes a Recursive Model Index which
+\citet{kraskaCaseLearnedIndex2018} also proposed a Recursive Model Index which
 is hierarchical in nature. They are similar to B-trees except, a machine
 learning model is used in each stage. On each stage, the model predicts another
 model until the leaf node is reached where the data is stored. It can also be
@@ -285,18 +256,51 @@ viewed as each node picking a better expert to answer the query.
       \includegraphics[width=1.0\textwidth]{RMI.png}
       \caption{The Recursive Model Index. \cite{kraskaCaseLearnedIndex2018}}
 \end{figure}
+\chapter{Proposed Methodology}
+
+\section{Using Distributed Hash Tables for Edge Computing}
+
+We tried to extend DHTs and learned indices to edge networks. We intend to use
+Kademlia not for content or discovery, but only the XOR based routing algorithm
+proposed by \citet{petarmaymounkovKademliaPeertoPeerInformation2002} for routing
+only, once the target node is determined using the learned index.
+
+\citet{xieEfficientIndexingMechanism2019} observed that DHTs may use a longer
+path than the shortest possible path between two nodes. This happens because the
+nodes which may be logically close to each as determined by XOR metric on node
+identifier may, in fact, be far apart physically. One possible way of solving
+this problem is to modify the node identifier used by Kademlia so that it is
+based on the location of the node. \citet{mengweiImprovementKademliaBased2013}
+did this by using the IP address of the nodes as the prefix in the node
+identifier. While this should make the routing in Kademlia more efficient, this
+method suffers from the drawback that the IP address of the node may change.
+
+The another way in which node identifiers can be modified is to encode the
+services offered a node into its identifier. For example, if a node is offering
+weather sensing service, its identifier may be prefixed by ``10'' or if it is
+offering road-traffic information, its identifier may be prefixed by ``01''.
+Similarly, if both the services are offered by the node, its identifier may
+start with ``11''. Because of how routing works in Kademlia, it would be trivial
+to search for nodes offering a particular service if this scheme is used. While
+we could not find any work that has done this, we believe that this too will
+have limitations.
+
+We used the open-source Python library for testing if Kademlia would be
+appropriate for this use case. \cite{KademliaIndexRst}
+
+\section{Using Learned Indices for Edge Computing}
 
 While \citet{kraskaCaseLearnedIndex2018} proposed that model should be trained
-only once, but we believe it should be possible to update the model periodically
-so that it can serve the queries better.
+only once, but we believe it would be better if the model is updated
+periodically so that it can serve the queries better.
 
-To test the performance of learned indexes, we simulated an edge network in
+To test the performance of learned indexes, we simulated an edge network using
 Python. Inside each edge node, we put five key value pairs. The keys were
-randomly generated strings. The values were randomly generated integers. First,
-keys were encoded using ordinal encoding. Then a one-vs-rest multi-class
+randomly generated strings and the values were randomly generated integers.
+First, keys were encoded using ordinal encoding. Then a one-vs-rest multi-class
 classifier was used to predict the location which the key-value pairs might be
-stored. Though the results were not conclusive, we believe that using a real
-world dataset like \cite{taxi&limousinecommissionNewYorkTaxi} should give
+stored. Though the results were not conclusive, using a real
+world dataset by \citet{taxi&limousinecommissionNewYorkTaxi} should give
 conclusive results. This is because random data carrier the most amount of
 entropy, it is the most difficult to compress, and real world data usually has a
 lot of redundancy and patterns which the model can learn.
@@ -306,4 +310,4 @@ lot of redundancy and patterns which the model can learn.
 We believe learned indexes can be a good fit for this problem. Along with
 learned indexes, the routing algorithm proposed in Kademlia can be used to
 routing after modifying it so that it favors the shortest path between the nodes
-based on the scheme proposed in \citet{mengweiImprovementKademliaBased2013}.
+based on the scheme proposed by \citet{mengweiImprovementKademliaBased2013}.
