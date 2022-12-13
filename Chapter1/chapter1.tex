@@ -89,7 +89,7 @@ on other nodes should be avoided because of the privacy issues.
 The problem of resource or data discovery is by no mean unique to edge computing
 or IoT. Even in the computer architecture, Flat Cache-Only Memory Architecture
 (COMA) faces the similar problem. In Flat COMA, memory lines can freely migrate.
-Whenever there is cache miss, the memory line must be located is the network and
+Whenever there is cache miss, the memory line must be located in the network and
 migrated to where it is needed.
 \cite{joseptorrellasCacheOnlyMemoryArchitecture}
 
@@ -160,7 +160,7 @@ DHT implementation based on the Kademlia algorithm.
 \citet{federicapaganelliDHTBasedDiscoveryService2012}, however, did not apply
 DHTs to edge networks.
 
-Researchers have also attempted to user Gaussian Mixture Models (GMM) for
+Researchers have also attempted to use Gaussian Mixture Models (GMM) for
 searching and indexing in edge computing.
 
 
@@ -217,19 +217,19 @@ failures.
 \begin{figure}[h]
       \centering
       \includegraphics[width=1.0\textwidth]{kademlia.png}
-      \caption[Kademlia]{The node with identifier 0011 stores information about nodes in
-            four subtrees which are encircled.
+      \caption[Kademlia]{The node with identifier 0011 stores information about
+            nodes in four subtrees which are encircled.
             \cite{petarmaymounkovKademliaPeertoPeerInformation2002}}
       % \caption[Routing in Kademlia]
 \end{figure}
 
 \section{Learned indexes}
 
-\citet{kraskaCaseLearnedIndex2018a} proposed that machine learning models may be
-used along with traditional data structures to improve performance. For example,
-in a sorted array, instead of using binary search or an index, a machine
-learning model may be used to predict the appropriate index of the element. This
-can be applied to many structures like B-trees, bloom filters, etc.
+\citet{kraska2018} proposed that machine learning models may be used along with
+traditional data structures to improve performance. For example, in a sorted
+array, instead of using binary search or an index, a machine learning model may
+be used to predict the appropriate index of the element. This can be applied to
+many structures like B-trees, bloom filters, etc.
 
 Several learned indexes have been proposed -- Learned Spatial Index
 \cite{pandeyCaseLearnedSpatial2020} for answering spatial range queries, Learned
@@ -245,25 +245,26 @@ recently. The idea of using machine learning models has been so influential that
 researchers are applying the same approach to even the sorting algorithms.
 \cite{kristoCaseLearnedSorting2020}
 
-\citet{kraskaCaseLearnedIndex2018} also proposed a Recursive Model Index which
-is hierarchical in nature. They are similar to B-trees except, a machine
-learning model is used in each stage. On each stage, the model predicts another
-model until the leaf node is reached where the data is stored. It can also be
-viewed as each node picking a better expert to answer the query.
+\citet{kraska2018} also proposed a Recursive Model Index which is hierarchical
+in nature. They are similar to B-trees except, a machine learning model is used
+in each stage. In each stage, the model predicts another model until the leaf
+node is reached where the data is stored. It can also be viewed as each node
+picking a better expert to answer the query.
 
 \begin{figure}[h]
       \centering
       \includegraphics[width=1.0\textwidth]{RMI.png}
-      \caption{The Recursive Model Index. \cite{kraskaCaseLearnedIndex2018}}
+      \caption[Recursive Model Index]{The Recursive Model Index.
+            \cite{kraska2018}}
 \end{figure}
 \chapter{Proposed Methodology}
 
 \section{Using Distributed Hash Tables for Edge Computing}
 
 We tried to extend DHTs and learned indices to edge networks. We intend to use
-Kademlia not for content or discovery, but only the XOR based routing algorithm
-proposed by \citet{petarmaymounkovKademliaPeertoPeerInformation2002} for routing
-only, once the target node is determined using the learned index.
+Kademlia not for content discovery, but only the XOR based routing algorithm
+proposed by \citet{petarmaymounkovKademliaPeertoPeerInformation2002} for
+routing, once the target node is determined using the learned index.
 
 \citet{xieEfficientIndexingMechanism2019} observed that DHTs may use a longer
 path than the shortest possible path between two nodes. This happens because the
@@ -290,20 +291,21 @@ appropriate for this use case. \cite{KademliaIndexRst}
 
 \section{Using Learned Indices for Edge Computing}
 
-While \citet{kraskaCaseLearnedIndex2018} proposed that model should be trained
-only once, but we believe it would be better if the model is updated
-periodically so that it can serve the queries better.
+
+While \citet{kraska2018} proposed that model should be trained only once, but we
+believe it would be better if the model is updated periodically so that it can
+serve the queries better.
 
 To test the performance of learned indexes, we simulated an edge network using
 Python. Inside each edge node, we put five key value pairs. The keys were
 randomly generated strings and the values were randomly generated integers.
 First, keys were encoded using ordinal encoding. Then a one-vs-rest multi-class
 classifier was used to predict the location which the key-value pairs might be
-stored. Though the results were not conclusive, using a real
-world dataset by \citet{taxi&limousinecommissionNewYorkTaxi} should give
-conclusive results. This is because random data carrier the most amount of
-entropy, it is the most difficult to compress, and real world data usually has a
-lot of redundancy and patterns which the model can learn.
+stored. Though the results were not conclusive, using a real world dataset by
+\citet{taxi&limousinecommissionNewYorkTaxi} should give conclusive results. This
+is because random data carrier the most amount of entropy, it is the most
+difficult to compress, and real world data usually has a lot of redundancy and
+patterns which the model can learn.
 
 \section{Conclusion}
 
