@@ -7,7 +7,7 @@
 \section{Edge computing}
 
 Edge computing is a newer computation paradigm as compared to cloud computing.
-Difference between them is that edge computing begins computation closer to the
+The difference between them is that edge computing begins computation closer to the
 edge of the network. As more of the data is being generated near the edge of the
 network, edge computing enables the data to be processed near the data source.
 \cite{weisongshiEdgeComputingVision2016}
@@ -16,7 +16,7 @@ network, edge computing enables the data to be processed near the data source.
 
 The most important reason for using edge computing is that it reduces the
 latency as the data has to travel a shorter distance.
-\cite{weisongshiEdgeComputingVision2016} In addition to this, with emergence of
+\cite{weisongshiEdgeComputingVision2016} In addition to this, with the emergence of
 Internet of Things, the data generated at the edge is expected to grow rapidly.
 For example, it is expected that the autonomous vehicles will generate data in
 the order of 1Tb per second. In such a case, it may not be possible for the
@@ -33,7 +33,7 @@ space, then the data generate on this node or the data this node was supported
 to store may be offloaded to other nodes in the network. Similarly, data
 processing can be offloaded to other nodes.
 
-Other challenge is that, no node in the edge network has complete knowledge of
+The other challenge is that, no node in the edge network has complete knowledge of
 the edge network. This is in contrast with cloud computing where a central is
 responsible for all the processing and does not need to coordinator with others.
 As such, it can become difficult to do any computation on the edge as the nodes
@@ -80,7 +80,7 @@ Requirements for the solution:
 \end{itemize}
 
 Further, it is not possible to simply boardcast the query to all the nodes in
-network as it would very inefficient. Doing so will lead to privacy issues as
+the network, as it would very inefficient. Doing so will lead to privacy issues, as
 the queries would be known to every node in the network. Also, caching the data
 on other nodes should be avoided because of the privacy issues.
 
@@ -89,12 +89,12 @@ on other nodes should be avoided because of the privacy issues.
 The problem of resource or data discovery is by no mean unique to edge computing
 or IoT. Even in the computer architecture, Flat Cache-Only Memory Architecture
 (COMA) faces the similar problem. In Flat COMA, memory lines can freely migrate.
-Whenever there is cache miss, the memory line must be located in the network and
+Whenever there is a cache miss, the memory line must be located in the network and
 migrated to where it is needed.
 \cite{joseptorrellasCacheOnlyMemoryArchitecture}
 
-But in our work, we are trying to solve this problem in context of edge
-computing where the nodes may be static or dynamic. Weather crowd-sensing would
+But in our work, we are trying to solve this problem in the context of edge
+computing, where the nodes may be static or dynamic. Weather crowd-sensing would
 need only static nodes, but in vehicular edge networks, the nodes are dynamic.
 
 
@@ -109,7 +109,7 @@ for queries in IoT:
 
 \begin{itemize}
       \item \textbf{Data queries}: Here, we are only interested in the data,
-            regardless of its source. The may be indexed by:
+            regardless of its source. They may be indexed by:
             \begin{itemize}
                   \item Spatial features: The data may be indexed using spatial
                         attributes, e.g. geo-coordinates. Space filling curves
@@ -156,7 +156,7 @@ multi-attribute queries as well as range queries. The method consists of three
 layers. They first used a space-filling curve to linearize and map the
 multidimensional domain into a one-dimensional one. Then a Prefix-Hash Table is
 used on top of a generic DHT with standard interface for get and put. At the
-end, the DHT is implementation based on the Kademlia algorithm.
+end, the DHT is an implementation based on the Kademlia algorithm.
 \citet{federicapaganelliDHTBasedDiscoveryService2012}, however, did not apply
 DHTs to edge networks.
 
@@ -191,7 +191,7 @@ leaves or joins the network. Each node joining the Kademlia randomly generates a
 Whenever a key-value pair is to be stored in the network, a 160 bit hash of the
 key is calculated. Then, nodes with the identifier closest to the hash are
 selected for storing the key-value pair. For measuring the distance and finding
-the closest nodes to a given key, Kademlia uses XOR metric even though it is
+the closest nodes to a given key, Kademlia uses XOR metric, even though it is
 non-euclidean. The XOR metric satisfies all four properties of a distance
 metric.
 \cite{MetricSpace2022}
@@ -205,7 +205,7 @@ with the identifier closest to a given key. With the algorithm proposed, in each
 iteration, we get one bit closer to the target node. Thus, if the network size
 if $n$, then the algorithm takes $O(log(n))$ iterations to find the target node.
 
-Nodes in Kademlia can visualize as leaves in a binary tree where the position of
+Nodes in Kademlia can visualize as leaves in a binary tree, where the position of
 each of the nodes is given by its identifier. In the algorithm, each node is
 required to maintain a routing table. Each of the node is expected to store
 information about $k$ nodes from each of the maximal tree in the that it is not
@@ -218,7 +218,7 @@ failures.
       \centering
       \includegraphics[width=1.0\textwidth]{kademlia.png}
       \caption[Kademlia]{The node with identifier 0011 stores information about
-            nodes in four subtrees which are encircled.
+            nodes in four subtrees, which are encircled.
             \cite{petarmaymounkovKademliaPeertoPeerInformation2002}}
       % \caption[Routing in Kademlia]
 \end{figure}
@@ -277,7 +277,7 @@ identifier. While this should make the routing in Kademlia more efficient, this
 method suffers from the drawback that the IP address of the node may change.
 
 The another way in which node identifiers can be modified is to encode the
-services offered a node into its identifier. For example, if a node is offering
+services offered by a node into its identifier. For example, if a node is offering
 weather sensing service, its identifier may be prefixed by ``10'' or if it is
 offering road-traffic information, its identifier may be prefixed by ``01''.
 Similarly, if both the services are offered by the node, its identifier may
@@ -291,7 +291,6 @@ appropriate for this use case. \cite{KademliaIndexRst}
 
 \section{Using Learned Indices for Edge Computing}
 
-
 While \citet{kraska2018} proposed that model should be trained only once, but we
 believe it would be better if the model is updated periodically so that it can
 serve the queries better.
@@ -300,7 +299,7 @@ To test the performance of learned indexes, we simulated an edge network using
 Python. Inside each edge node, we put five key value pairs. The keys were
 randomly generated strings and the values were randomly generated integers.
 First, keys were encoded using ordinal encoding. Then a one-vs-rest multi-class
-classifier was used to predict the location which the key-value pairs might be
+classifier was used to predict the location in which the key-value pairs might be
 stored. Though the results were not conclusive, using a real world dataset by
 \citet{taxi&limousinecommissionNewYorkTaxi} should give conclusive results. This
 is because random data carrier the most amount of entropy, it is the most
