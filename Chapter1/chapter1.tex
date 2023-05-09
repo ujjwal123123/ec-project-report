@@ -208,8 +208,8 @@ if $n$, then the algorithm takes $O(log(n))$ iterations to find the target node.
 Nodes in Kademlia can visualize as leaves in a binary tree, where the position of
 each of the nodes is given by its identifier. In the algorithm, each node is
 required to maintain a routing table. Each of the node is expected to store
-information about $k$ nodes from each of the maximal tree in the that it is not
-a part in its routing table. The information includes the identifier, IP address
+information about $k$ nodes from each of the maximal tree which it is not
+a part of in its routing table. The information includes the identifier, IP address
 and the port number. The requirement of storing information about $k$ nodes from
 each is to bring redundancy and to ensure that the network is robust to node
 failures.
@@ -286,7 +286,7 @@ to search for nodes offering a particular service if this scheme is used. While
 we could not find any work that has done this, we believe that this too will
 have limitations.
 
-We used the open-source Python library for testing if Kademlia would be
+We used an open-source Python library for testing if Kademlia would be
 appropriate for this use case. \cite{KademliaIndexRst}
 
 \section{Using Learned Indices for Edge Computing}
